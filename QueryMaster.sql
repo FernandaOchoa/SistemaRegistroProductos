@@ -407,3 +407,77 @@ BEGIN
 END
 GO
 
+/** Joins **/
+Select Usuario, Clave from Usuario
+order by IdUsuario
+
+Select Nombre Edad, Apellidos from Persona
+order by Estado
+
+Select Nombre, Descripcion from Producto
+order by Codigo
+
+Select Nombre Edad, Apellidos from Persona
+inner join Usuario
+on Persona.IdPersona = Usuario.IdPersona
+
+Select Producto.Nombre, Producto.Descripcion from Producto
+left join Categoria cat
+on Producto.IdCategoria = cat.IdCategoria
+
+Select Ingreso.Fecha, Ingreso.Estado from Ingreso
+right join Usuario u
+on Ingreso.IdUsuario = u.IdUsuario
+
+Select Producto.IdProducto,
+Producto.Nombre,
+Producto.Descripcion
+INTO #ProductAll
+FROM Categoria
+Inner join Producto on
+Producto.IdProducto = Categoria.IdCategoria
+
+Select Persona.Nombre, Persona.Edad
+INTO #AllUsers
+FROM Usuario
+Left join Persona on
+Usuario.IdUsuario = Persona.IdPersona
+
+
+/** Triggers **/
+create trigger insertarUsuarios
+  on Usuario
+  for insert
+as
+  SET IDENTITY_INSERT [dbo].[Usuario] ON 
+  INSERT [dbo].[Usuario] ([IdUsuario], [Usuario], [Clave], [Cargo], [IdPersona]) VALUES (3, N'Francisco', N'1234', N'Administrador', 3)
+  SET IDENTITY_INSERT [dbo].[Usuario] OFF
+
+create trigger insertarProducto
+  on Producto
+  for insert
+as
+ SET IDENTITY_INSERT [dbo].[Producto] ON 
+INSERT [dbo].[Producto] ([IdProducto], [Codigo], [Nombre], [Descripcion], [Imagen], [IdCategoria], [IdPresentacion]) VALUES (5, 78956, N'Harina', N'Harina	', NULL, 1, 3)
+INSERT [dbo].[Producto] ([IdProducto], [Codigo], [Nombre], [Descripcion], [Imagen], [IdCategoria], [IdPresentacion]) VALUES (6, 45632, N'Huevo', N'Huevo	', NULL, 1, 3)
+INSERT [dbo].[Producto] ([IdProducto], [Codigo], [Nombre], [Descripcion], [Imagen], [IdCategoria], [IdPresentacion]) VALUES (7, 12389, N'Aceite', N'Aceite	', NULL, 1, 3)
+INSERT [dbo].[Producto] ([IdProducto], [Codigo], [Nombre], [Descripcion], [Imagen], [IdCategoria], [IdPresentacion]) VALUES (8, 45623, N'Paletas', N'Magnum.		', NULL, 1, 1)
+SET IDENTITY_INSERT [dbo].[Producto] OFF
+
+select Nombre,count(*) as cant
+from Producto
+group by Nombre
+
+/** Vista  Stock**/
+
+create view stock
+as
+  select Nombre,count(*) as cant
+  from Producto
+  group by Nombre
+
+create view stock
+as
+  select Nombre,count(*) as cant
+  from Producto
+  group by Nombre
